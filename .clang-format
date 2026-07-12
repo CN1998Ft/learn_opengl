@@ -1,0 +1,16 @@
+DisableFormat: true
+# BasedOnStyle: LLVM
+# IndentWidth: 4
+# ColumnLimit: 100
+# PointerAlignment: Right
+# BreakAfterReturnType: All
+# PackArguments: true
+# PackParameters: true
+# SortIncludes: false
+#
+# # Braces on new line always.
+# BreakBeforeBraces: Allman
+#
+# # some unique cases
+# AllowShortIfStatementsOnASingleLine: true
+# AllowShortBlocksOnASingleLine: true
