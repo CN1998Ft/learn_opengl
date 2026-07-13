@@ -3,6 +3,7 @@ CompileFlags:
     "-std=c++17",
     "-Iinclude",
     "-I/opt/homebrew/include",
+    "-IC:\\Users\\93581\\scoop\\apps\\glfw\\current\\include",
   ]
 
 Completion:

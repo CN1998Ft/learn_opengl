@@ -4,6 +4,7 @@ cd "$(dirname "$0")" && echo "[Current dir: $PWD]"
 build()
 {
     mac='^darwin.*$'
+    linux='^linux.*$'
     pushd ../build > /dev/null 2>&1
 
     INCLUDE="-I../code/include"
@@ -11,11 +12,14 @@ build()
     SRC="../code/gl.c ../code/*.cpp"
     LIBS="-lglfw"
     if [[ "$OSTYPE" =~ $mac ]]; then
-        echo "[Building learning OpenGL project]"
+        echo "[Building mac version learning OpenGL project]"
         INCLUDE="$INCLUDE -I/opt/homebrew/include"
         LIBS="$LIBS -L/opt/homebrew/lib \
 -framework OpenGL -framework Cocoa -framework IOKit \
 -framework CoreVideo"
+    elif [[ "$OSTYPE" =~ $linux ]]; then
+        echo "[Building linux version learning OpenGL project]"
+
     fi
 
     echo "gcc $CFLAGS $INCLUDE $SRC $LIBS -o main"
