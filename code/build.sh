@@ -13,13 +13,13 @@ build()
     LIBS="-lglfw"
     if [[ "$OSTYPE" =~ $mac ]]; then
         echo "[Building mac version learning OpenGL project]"
-        INCLUDE="$INCLUDE -I/opt/homebrew/include"
-        LIBS="$LIBS -L/opt/homebrew/lib \
+        INCLUDE+=" -I/opt/homebrew/include"
+        LIBS+=" -L/opt/homebrew/lib \
 -framework OpenGL -framework Cocoa -framework IOKit \
 -framework CoreVideo"
     elif [[ "$OSTYPE" =~ $linux ]]; then
         echo "[Building linux version learning OpenGL project]"
-
+        LIBS+=" -lGL -lX11 -lpthread -lXrandr -lXi -ldl"
     fi
 
     echo "gcc $CFLAGS $INCLUDE $SRC $LIBS -o main"
