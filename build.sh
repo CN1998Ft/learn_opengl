@@ -5,11 +5,11 @@ build()
 {
     mac='^darwin.*$'
     linux='^linux.*$'
-    pushd ../build > /dev/null 2>&1
+    pushd ./build > /dev/null 2>&1
 
-    INCLUDE="-I../code/include"
+    INCLUDE="-I../src/include"
     CFLAGS="-std=c++17 -Wall -g"
-    SRC="../code/gl.c ../code/*.cpp"
+    SRC="../src/gl.c ../src/*.cpp"
     LIBS="-lglfw"
     if [[ "$OSTYPE" =~ $mac ]]; then
         echo "[Building mac version learning OpenGL project]"
@@ -28,13 +28,13 @@ build()
     popd > /dev/null 2>&1
 }
 
-if [[ ! -d ../build ]]; then
-    mkdir ../build > /dev/null 2>&1
-    echo '*' > ../build/.gitignore
+if [[ ! -d ./build ]]; then
+    mkdir ./build > /dev/null 2>&1
+    echo '*' > ./build/.gitignore
 fi
 
 if [[ "$#" == 0 ]]; then
     build
 elif [[ "$1" == "clean" ]]; then
-    rm -rf ../build > /dev/null 2>&1
+    rm -rf ./build > /dev/null 2>&1
 fi
