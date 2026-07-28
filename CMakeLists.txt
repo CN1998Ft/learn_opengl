@@ -9,7 +9,7 @@ add_executable(main
     src/gl.c
 )
 
-if(WIN32)
+if(CMAKE_SYSTEM_NAME STREQUAL Windows)
     if(MSVC)
         target_link_options(
             main
@@ -33,7 +33,7 @@ if(WIN32)
         PRIVATE
         glfw3
     )
-elseif(APPLE)
+elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
     target_include_directories(
         main
         PRIVATE
@@ -51,6 +51,13 @@ elseif(APPLE)
         "-framework Cocoa"
         "-framework IOKit"
         "-framework CoreVideo"
+    )
+elseif(CMAKE_SYSTEM_NAME STREQUAL Linux)
+    find_package(glfw3 REQUIRED)
+    target_link_libraries(
+        main
+        PRIVATE
+        glfw
     )
 endif()
 
