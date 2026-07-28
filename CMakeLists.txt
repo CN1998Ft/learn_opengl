@@ -11,7 +11,6 @@ add_executable(main
 
 if(WIN32)
     if(MSVC)
-        message("Hello")
         target_link_options(
             main
             PRIVATE
@@ -33,6 +32,25 @@ if(WIN32)
         main
         PRIVATE
         glfw3
+    )
+elseif(APPLE)
+    target_include_directories(
+        main
+        PRIVATE
+        "/opt/homebrew/include"
+    )
+    target_link_directories(
+        main
+        PRIVATE
+        "/opt/homebrew/lib"
+    )
+    target_link_libraries(
+        main
+        PRIVATE
+        glfw3
+        "-framework Cocoa"
+        "-framework IOKit"
+        "-framework CoreVideo"
     )
 endif()
 

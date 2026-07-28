@@ -37,4 +37,9 @@ if [[ "$#" == 0 ]]; then
     build
 elif [[ "$1" == "clean" ]]; then
     rm -rf ./build > /dev/null 2>&1
+elif [[ "$1" == "cmake" ]]; then
+    rm -rf ./build > /dev/null 2>&1
+    cmake -B build
+    echo '*' > ./build/.gitignore
+    cmake --build build
 fi
