@@ -5,12 +5,12 @@ build()
 {
     mac='^darwin.*$'
     linux='^linux.*$'
-    pushd ./build > /dev/null 2>&1
 
-    INCLUDE="-I../src/include"
+    INCLUDE="-I./src/include"
     CFLAGS="-std=c++17 -Wall -g"
-    SRC="../src/gl.c ../src/*.cpp"
+    SRC="./src/gl.c ./src/*.cpp"
     LIBS="-lglfw"
+    OUTFILE="-o ./build/main"
     if [[ "$OSTYPE" =~ $mac ]]; then
         echo "[Building mac version learning OpenGL project]"
         INCLUDE+=" -I/opt/homebrew/include"
@@ -22,10 +22,15 @@ build()
         LIBS+=" -lGL -lX11 -lpthread -lXrandr -lXi -ldl"
     fi
 
-    echo "gcc $CFLAGS $INCLUDE $SRC $LIBS -o main"
-    g++ $CFLAGS $INCLUDE $SRC $LIBS -o main
+    echo "gcc $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE"
+    g++ $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE
+}
 
-    popd > /dev/null 2>&1
+clean()
+{
+    rm -rf ./build > /dev/null 2>&1
+    mkdir ./build > /dev/null 2>&1
+    echo '*' > ./build/.gitignore
 }
 
 if [[ ! -d ./build ]]; then
@@ -34,12 +39,12 @@ if [[ ! -d ./build ]]; then
 fi
 
 if [[ "$#" == 0 ]]; then
+    clean
     build
 elif [[ "$1" == "clean" ]]; then
-    rm -rf ./build > /dev/null 2>&1
+    clean
 elif [[ "$1" == "cmake" ]]; then
-    rm -rf ./build > /dev/null 2>&1
+    clean
     cmake -B build
-    echo '*' > ./build/.gitignore
     cmake --build build
 fi
