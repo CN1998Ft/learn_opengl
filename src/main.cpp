@@ -96,13 +96,13 @@ int main()
             0.0f,  0.5f,  0.0f  // 3rd
         };
 
+        // Vertex Buffer Object
         unsigned int VBO;
         glGenBuffers(1, &VBO);
 
-        glBindBuffer(GL_ARRAY_BUFFER, VBO);
-
-        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
-                     GL_STATIC_DRAW);
+        // Vertex Array Object
+        unsigned int VAO;
+        glGenVertexArrays(1, &VAO);
 
         // Create shader section
         unsigned int vertexShader;
@@ -154,11 +154,22 @@ int main()
                       << infoLog << std::endl;
         }
 
-        glUseProgram(shaderProgram);
-
         // Delete the previous shaders as we do not need them anymore
         glDeleteShader(vertexShader);
         glDeleteShader(fragmentShader);
+
+        // link vertex attribute
+        glBindVertexArray(VAO);
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices,
+                     GL_STATIC_DRAW);
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                              (void *)0);
+        glEnableVertexAttribArray(0);
+
+        glUseProgram(shaderProgram);
+
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // glfwSetWindowSize(window, 1200, 600);
 
