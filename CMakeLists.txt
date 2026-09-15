@@ -44,14 +44,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
         PRIVATE
         "/opt/homebrew/lib"
     )
-    target_link_libraries(
-        main
-        PRIVATE
-        glfw3
-        "-framework Cocoa"
-        "-framework IOKit"
-        "-framework CoreVideo"
-    )
+    find_package(glfw3 CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE glfw)
+    # target_link_libraries(
+    #     main
+    #     PRIVATE
+    #     glfw3
+    #     "-framework Cocoa"
+    #     "-framework IOKit"
+    #     "-framework CoreVideo"
+    #     "-framework QuartzCore"
+    # )
 elseif(CMAKE_SYSTEM_NAME STREQUAL Linux)
     find_package(glfw3 REQUIRED)
     target_link_libraries(

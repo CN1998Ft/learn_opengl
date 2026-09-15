@@ -6,6 +6,10 @@
 #include <sstream>
 #include <string>
 
+#ifdef __linux__
+#include <cmath>
+#endif
+
 /**
  * @brief callback functions to resize the window.
  *
