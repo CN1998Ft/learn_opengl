@@ -22,7 +22,7 @@ build()
         LIBS+=" -lGL -lX11 -lpthread -lXrandr -lXi -ldl"
     fi
 
-    echo "gcc $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE"
+    echo "g++ $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE"
     g++ $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE
 }
 
