@@ -10,8 +10,10 @@
 
 /** Shader
  *
- * @brief read and compile the shader in this Shader class.
+ * @brief the shader class that read and compile the shader files
  */
+namespace LearnOpenGLShader
+{
 class Shader
 {
   public:
@@ -42,7 +44,7 @@ class Shader
         }
         catch (std::ifstream::failure &e)
         {
-            std::cout << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ"
+            std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESSFULLY_READ"
                       << std::endl;
         }
 
@@ -60,8 +62,7 @@ class Shader
         if (!success)
         {
             glGetShaderInfoLog(vertex, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n"
-                      << infoLog << std::endl;
+            printf("ERROR::SHADER::VERTEX::COMPILATION_FAILED\n%s", infoLog);
         }
 
         fragment = glCreateShader(GL_FRAGMENT_SHADER);
@@ -71,8 +72,7 @@ class Shader
         if (!success)
         {
             glGetShaderInfoLog(fragment, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n"
-                      << infoLog << std::endl;
+            printf("ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n%s", infoLog);
         }
 
         ID = glCreateProgram();
@@ -82,28 +82,30 @@ class Shader
         glGetProgramiv(ID, GL_LINK_STATUS, &success);
         if (!success)
         {
-            glGetProgramInfoLog(ID, 512, NULL, infoLog);
-            std::cout << "ERROR::SHADER::PROGRAM::COMPILATION_FAILED\n"
-                      << infoLog << std::endl;
+            glad_glGetProgramInfoLog(ID, 512, NULL, infoLog);
+            printf("ERROR::SHADER::PROGRAM::LINK_FAILED\n%s", infoLog);
         }
+
         glDeleteShader(vertex);
         glDeleteShader(fragment);
     };
     // use/activate the shader
-    void use() { glUseProgram(ID); };
+    void use() { glUseProgram(ID); }
     // utility uniform functions
+
     void setBool(const std::string &name, bool value) const
     {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), (int)value);
-    };
+    }
     void setInt(const std::string &name, int value) const
     {
         glUniform1i(glGetUniformLocation(ID, name.c_str()), value);
-    };
+    }
     void setFloat(const std::string &name, float value) const
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
-    };
+    }
 };
+} // namespace LearnOpenGLShader
 
 #endif // SHADER_HPP

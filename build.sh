@@ -47,4 +47,11 @@ elif [[ "$1" == "cmake" ]]; then
     clean
     cmake -B build
     cmake --build build
+
+elif [[ "$1" == "clangd" ]]; then
+    clean
+    rm -rf ./compile_commands.json > /dev/null 2>&1
+    cmake -B build -S . -DCMAKE_EXPORT_COMPILE_COMMANDS=On
+    mv ./build/compile_commands.json ./compile_commands.json
+    clean
 fi

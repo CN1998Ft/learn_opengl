@@ -1,23 +1,18 @@
 #include <glad/gl.h>
 #include <GLFW/glfw3.h>
-
 #include <iostream>
-
-#ifdef __linux__
-#include <cmath>
-#endif
 
 #include "shader.hpp"
 
 /**
- * @brief callback functions to resize the window.
+ * @brief callback functions to resize the window
  *
- * This function take input like window memory, width and height values to
- * resize the OpenGL viewport when called.
+ * This function take input like window, width and height to resize the opengl
+ * viewport when called.
  *
- * @param[out] window  The memory of the GLFWwindow.
- * @param[in]  width   The width of the OpenGL viewport.
- * @param[in]  height  The height of the OpenGL viewport.
+ * @param[in] window
+ * @param[in]  width
+ * @param[in]  height
  * @return     void
  */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height)
@@ -25,50 +20,68 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
+/**
+ * @brief process input key
+ *
+ * This function monitors the key pressed when the GLFW window is focused.
+ *
+ * @param[in] window
+ * @return     void
+ */
 void processInput(GLFWwindow *window)
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
+    {
         glfwSetWindowShouldClose(window, true);
+    }
 }
 
 int main()
 {
-    // Initialise the glfw and give the hint to the version and mode.
-    glfwInit();
+    if (!glfwInit())
+        return -1;
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 #ifdef __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
+    GLFWwindow *window;
 
-    // Create a window
-    GLFWwindow *window =
-        glfwCreateWindow(800, 600, "LearnOpenGL_FloatingWindow", NULL, NULL);
-    // if (window == NULL)
+    window =
+        glfwCreateWindow(800, 600, "LearnOpengl_FloatingWindow", NULL, NULL);
+
     if (!window)
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
+
     glfwMakeContextCurrent(window);
 
     // Initialise the glad for loading OpenGL functions.
-    if (!gladLoadGL(glfwGetProcAddress))
+    int version = gladLoadGL(glfwGetProcAddress);
+
+    if (!version)
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        std::cout << "Failed to initialise GLAD" << std::endl;
         return -1;
     }
 
+    printf("OpenGL %d.%d\n", GLAD_VERSION_MAJOR(version),
+           GLAD_VERSION_MINOR(version));
+
+    glViewport(0, 0, 800, 600);
+    // Resize the glViewport after window resize
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    Shader ourShader("shaders/vertex.glsl", "shaders/fragment.glsl");
-
+    LearnOpenGLShader::Shader ourShader("shaders/vertex.glsl",
+                                        "shaders/fragment.glsl");
     float vertices[] = {
         // positions        // colors
         0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
-        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bootom left
+        -0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // bottom left
         0.0f,  0.5f,  0.0f, 0.0f, 0.0f, 1.0f  // top
     };
 
@@ -79,7 +92,7 @@ int main()
     // Vertex Array Object
     unsigned int VAO;
     glGenVertexArrays(1, &VAO);
-    // link vertex attribute
+
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
@@ -95,29 +108,26 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
-
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        // glClearColor(0.8f, 0.3f, 0.8f, 1.0f);
         // glClear will fill the buffer with the color defined by glClearColor.
         glClear(GL_COLOR_BUFFER_BIT);
 
-        // glBindVertexArray(VAO);
         ourShader.use();
-
         glDrawArrays(GL_TRIANGLES, 0, 3);
-
-        // glfwSetWindowSize(window, 1200, 600);
-
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
     glDeleteBuffers(1, &VBO);
     glDeleteVertexArrays(1, &VAO);
 
+    // Get maximum number of vertex
     int nrAttributes;
     glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nrAttributes);
     std::cout << "Maximum nr of vertex attributes supported: " << nrAttributes
               << std::endl;
 
+    // Terminate window
     glfwTerminate();
     return 0;
 }
