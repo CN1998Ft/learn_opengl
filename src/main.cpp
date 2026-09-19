@@ -78,6 +78,7 @@ int main()
 
     LearnOpenGLShader::Shader ourShader("shaders/vertex.glsl",
                                         "shaders/fragment.glsl");
+    // Answer_2: can also just change the position y values
     float vertices[] = {
         // positions        // colors
         0.5f,  -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom right
@@ -105,6 +106,8 @@ int main()
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
+    // Answer_1
+    float offset = 0.5f;
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -114,6 +117,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
 
         ourShader.use();
+        // Answer_1
+        ourShader.setFloat("xOffset", offset);
         glDrawArrays(GL_TRIANGLES, 0, 3);
         glfwSwapBuffers(window);
         glfwPollEvents();
