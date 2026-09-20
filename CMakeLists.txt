@@ -7,6 +7,8 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_executable(main
     src/main.cpp
     src/gl.c
+    src/stb_image.cpp
+    src/stb_image.h
 )
 
 if(CMAKE_SYSTEM_NAME STREQUAL Windows)
