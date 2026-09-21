@@ -5,11 +5,13 @@
 #include "shader.hpp"
 #include "stb_image.h"
 
+float Mixture = 0.1f;
+
 /**
  * @brief callback functions to resize the window
  *
- * This function take input like window, width and height to resize the opengl
- * viewport when called.
+ * This function take input like window, width and height to resize the
+ * opengl viewport when called.
  *
  * @param[in] window
  * @param[in]  width
@@ -35,7 +37,39 @@ void processInput(GLFWwindow *window)
     {
         glfwSetWindowShouldClose(window, true);
     }
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        Mixture += 0.01f;
+        if (Mixture >= 1.0f)
+        {
+            Mixture = 1.0f;
+        }
+    }
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        Mixture -= 0.01f;
+        if (Mixture <= 0.0f)
+        {
+            Mixture = 0.0f;
+        }
+    }
 }
+
+// My solution, this will only change once.
+// void monitorMixture(GLFWwindow *window, LearnOpenGLShader::Shader ourShader,
+//                     float mixture)
+// {
+//     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+//     {
+//         glUniform1f(glGetUniformLocation(ourShader.ID, "mixture"),
+//                     mixture + 0.01f);
+//     }
+//     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+//     {
+//         glUniform1f(glGetUniformLocation(ourShader.ID, "mixture"),
+//                     mixture - 0.01f);
+//     }
+// }
 
 int main()
 {
@@ -80,7 +114,14 @@ int main()
     LearnOpenGLShader::Shader ourShader("shaders/vertex.glsl",
                                         "shaders/fragment.glsl");
     float vertices[] = {
+        //                             // Answer 2 change the coordinate to 2.0f
+        //                             // Answer 3 change the coordinate to
+        //                             select the region of interest
         // positions        // colors         // texture coordinate
+        // 0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 0.55f, 0.55f, // top right
+        // 0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 0.55f, 0.45f, // bottom right
+        // -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.45f, 0.45f, // bottom left
+        // -0.5f, 0.5f,  0.0f, 1.0f, 1.0f, 0.0f, 0.45f, 0.55f, // top left
         0.5f,  0.5f,  0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, // top right
         0.5f,  -0.5f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, // bottom right
         -0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, // bottom left
@@ -121,7 +162,6 @@ int main()
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
-
     // Texture attribute
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float),
                           (void *)(6 * sizeof(float)));
@@ -132,6 +172,7 @@ int main()
     glGenTextures(1, &texture1);
     glBindTexture(GL_TEXTURE_2D, texture1);
     // Set the texture wrapping/filtering options
+    // Answer 2 Simply run GL_CLAMP_TO_EDGE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER,
@@ -157,8 +198,8 @@ int main()
     // Set the texture wrapping/filtering options
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     stbi_set_flip_vertically_on_load(true);
     data = stbi_load("resources/textures/awesomeface.png", &width, &height,
                      &nrChannels, 0);
@@ -180,6 +221,7 @@ int main()
     // Two different options
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     ourShader.setInt("texture2", 1);
+    ourShader.setFloat("mixture", Mixture);
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -194,6 +236,7 @@ int main()
         glBindTexture(GL_TEXTURE_2D, texture2);
 
         // render container
+        ourShader.setFloat("mixture", Mixture);
         ourShader.use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
