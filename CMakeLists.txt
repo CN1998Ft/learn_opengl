@@ -36,18 +36,20 @@ if(CMAKE_SYSTEM_NAME STREQUAL Windows)
         glfw3
     )
 elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
-    target_include_directories(
-        main
-        PRIVATE
-        "/opt/homebrew/include"
-    )
-    target_link_directories(
-        main
-        PRIVATE
-        "/opt/homebrew/lib"
-    )
+    # target_include_directories(
+    #     main
+    #     PRIVATE
+    #     "/opt/homebrew/include"
+    # )
+    # target_link_directories(
+    #     main
+    #     PRIVATE
+    #     "/opt/homebrew/lib"
+    # )
     find_package(glfw3 CONFIG REQUIRED)
     target_link_libraries(main PRIVATE glfw)
+    find_package(glm CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE glm::glm)
     # target_link_libraries(
     #     main
     #     PRIVATE
@@ -59,20 +61,17 @@ elseif(CMAKE_SYSTEM_NAME STREQUAL Darwin)
     # )
 elseif(CMAKE_SYSTEM_NAME STREQUAL Linux)
     find_package(glfw3 REQUIRED)
-    target_link_libraries(
-        main
-        PRIVATE
-        glfw
-    )
+    target_link_libraries(main PRIVATE glfw)
+    find_package(glm CONFIG REQUIRED)
+    target_link_libraries(main PRIVATE glm::glm)
 endif()
 
 find_package(OpenGL REQUIRED)
-
-include_directories(
-    src/include
-)
-
 target_link_libraries(main
     PRIVATE
     OpenGL::GL
+)
+
+include_directories(
+    src/include
 )
