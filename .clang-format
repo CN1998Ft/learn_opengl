@@ -4,8 +4,11 @@ IndentWidth: 4
 SortIncludes: false
 ColumnLimit: 80
 PointerAlignment: Right
+ReferenceAlignment: Right
 PenaltyReturnTypeOnItsOwnLine: 20
 BinPackArguments: true
 BinPackParameters: true
+
+ReflowComments: Never
 
 BreakBeforeBraces: Allman

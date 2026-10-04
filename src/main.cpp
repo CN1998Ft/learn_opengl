@@ -1,5 +1,5 @@
-#include <glad/gl.h>
 #include <GLFW/glfw3.h>
+#include <glad/gl.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -179,7 +179,18 @@ int main()
     // free(data);
     stbi_image_free(data);
 
+    // transformation matrix
+    glm::mat4 trans = glm::mat4(1.0f);
+    // trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+    // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+
+    // This needs to be before the glUniform for them to work
+    // void use() { glUseProgram(ID); }
+    // ID is the glCreateProgram()
     ourShader.use();
+
+    // Texture apply
     // Two different options
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     ourShader.setInt("texture2", 1);
@@ -196,8 +207,13 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        // Inside a loop for contineous rotate
+        trans = glm::rotate(trans, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));
+        unsigned int transformLoc =
+            glGetUniformLocation(ourShader.ID, "transform");
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
+
         // render container
-        ourShader.use();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -215,11 +231,11 @@ int main()
     glfwTerminate();
 
     // Testing the transformation knowledge.
-    glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
-    glm::mat4 trans = glm::mat4(1.0f);
-    trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
-    vec = trans * vec;
-    std::cout << vec[0] << vec[1] << vec[2] << std::endl;
+    // glm::vec4 vec(1.0f, 0.0f, 0.0f, 1.0f);
+    // trans = glm::mat4(1.0f);
+    // trans = glm::translate(trans, glm::vec3(1.0f, 1.0f, 0.0f));
+    // vec = trans * vec;
+    // std::cout << vec[0] << vec[1] << vec[2] << std::endl;
 
     return 0;
 }

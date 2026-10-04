@@ -5,6 +5,7 @@ build()
 {
     mac='^darwin.*$'
     linux='^linux.*$'
+    windows='^(cygwin|msys|mingw).*$'
 
     INCLUDE="-I./src/include"
     CFLAGS="-std=c++17 -Wall -g"
@@ -20,6 +21,15 @@ build()
     elif [[ "$OSTYPE" =~ $linux ]]; then
         echo "[Building linux version learning OpenGL project]"
         LIBS+=" -lGL -lX11 -lpthread -lXrandr -lXi -ldl"
+
+    elif [[ "$OSTYPE" =~ $windows ]]; then
+        echo -e "\n[>>>>>>>>>>>>>>>>>>> WARNING!!! <<<<<<<<<<<<<<<<<<<]\n"
+        echo "[!IMPORTANT:] Windows machine detected."
+        echo "[!NOTE:] Please try the following steps: "
+        echo "      1. Enable your Microsoft developer Command Prompt"
+        echo -e "      2. run [build] in the terminal"
+        echo -e "\n[>>>>>>>>>>>>>>>>>>> WARNING!!! <<<<<<<<<<<<<<<<<<<]\n"
+        return $?
     fi
 
     echo "g++ $CFLAGS $INCLUDE $SRC $LIBS $OUTFILE"
