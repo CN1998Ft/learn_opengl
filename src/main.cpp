@@ -1,5 +1,5 @@
-#include <GLFW/glfw3.h>
 #include <glad/gl.h>
+#include <GLFW/glfw3.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -7,6 +7,10 @@
 
 #include "shader.hpp"
 #include "stb_image.h"
+
+// Global variable
+float blend_percent = 0.2f;
+glm::vec3 translation_vector;
 
 /**
  * @brief callback functions to resize the window
@@ -37,6 +41,30 @@ void processInput(GLFWwindow *window)
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
     {
         glfwSetWindowShouldClose(window, true);
+    }
+    else if (glfwGetKey(window, GLFW_KEY_K) == GLFW_PRESS)
+    {
+        blend_percent += 0.001f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_J) == GLFW_PRESS)
+    {
+        blend_percent -= 0.001f;
+    }
+    else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+    {
+        translation_vector = glm::vec3(0.0f, 0.1f, 0.0f);
+    }
+    else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
+    {
+        translation_vector = glm::vec3(0.0f, -0.1f, 0.0f);
+    }
+    else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
+    {
+        translation_vector = glm::vec3(0.1f, 0.0f, 0.0f);
+    }
+    else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
+    {
+        translation_vector = glm::vec3(-0.1f, 0.0f, 0.0f);
     }
 }
 
@@ -179,12 +207,6 @@ int main()
     // free(data);
     stbi_image_free(data);
 
-    // transformation matrix
-    glm::mat4 trans = glm::mat4(1.0f);
-    // trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
-    trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-
     // This needs to be before the glUniform for them to work
     // void use() { glUseProgram(ID); }
     // ID is the glCreateProgram()
@@ -194,6 +216,7 @@ int main()
     // Two different options
     glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
     ourShader.setInt("texture2", 1);
+
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
@@ -207,14 +230,31 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, texture2);
 
+        // Texture blend
+        glUniform1f(glGetUniformLocation(ourShader.ID, "blend_percent"),
+                    blend_percent);
+
+        // transformation matrix
+        glm::mat4 trans = glm::mat4(1.0f);
+        // trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
+        // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+        trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
         // Inside a loop for contineous rotate
         trans = glm::rotate(trans, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));
         unsigned int transformLoc =
             glGetUniformLocation(ourShader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
-
-        // render container
+        // render first container
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+        glm::mat4 transform = glm::mat4(1.0f);
+        transform = glm::translate(transform, translation_vector);
+        // Inside a loop for contineous rotate
+        transform = glm::rotate(transform, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));
+        glUniformMatrix4fv(transformLoc, 1, GL_FALSE,
+                           glm::value_ptr(transform));
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
