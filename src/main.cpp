@@ -10,6 +10,9 @@
 
 // Global variable
 float blend_percent = 0.2f;
+float x_translate = 0.0f;
+float y_translate = 0.0f;
+float z_translate = 0.0f;
 glm::vec3 translation_vector;
 
 /**
@@ -52,19 +55,19 @@ void processInput(GLFWwindow *window)
     }
     else if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
     {
-        translation_vector = glm::vec3(0.0f, 0.1f, 0.0f);
+        y_translate += 0.001f;
     }
     else if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS)
     {
-        translation_vector = glm::vec3(0.0f, -0.1f, 0.0f);
+        y_translate -= 0.001f;
     }
     else if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS)
     {
-        translation_vector = glm::vec3(0.1f, 0.0f, 0.0f);
+        x_translate += 0.001f;
     }
     else if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS)
     {
-        translation_vector = glm::vec3(-0.1f, 0.0f, 0.0f);
+        x_translate -= 0.001f;
     }
 }
 
@@ -240,7 +243,8 @@ int main()
         // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
         trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
         // Inside a loop for contineous rotate
-        trans = glm::rotate(trans, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));
+        trans = glm::rotate(trans, (float)glfwGetTime(),
+                            glm::vec3(0.0f, 0.0f, 1.0f));
         unsigned int transformLoc =
             glGetUniformLocation(ourShader.ID, "transform");
         glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(trans));
@@ -248,6 +252,9 @@ int main()
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
         glm::mat4 transform = glm::mat4(1.0f);
+        translation_vector[0] = x_translate;
+        translation_vector[1] = y_translate;
+        translation_vector[2] = z_translate;
         transform = glm::translate(transform, translation_vector);
         // Inside a loop for contineous rotate
         transform = glm::rotate(transform, 0.001f, glm::vec3(0.0f, 0.0f, 1.0f));

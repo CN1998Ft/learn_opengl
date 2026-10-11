@@ -12,7 +12,7 @@
  *
  * @brief the shader class that read and compile the shader files
  */
-namespace LearnOpenGLShader
+namespace LearnOpenGLShader // namespace is like a guard
 {
 class Shader
 {
