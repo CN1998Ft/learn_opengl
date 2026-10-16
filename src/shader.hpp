@@ -105,7 +105,7 @@ class Shader
     {
         glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
     }
-};
+}; // Class Camera
 } // namespace LearnOpenGLShader
 
 #endif // SHADER_HPP
