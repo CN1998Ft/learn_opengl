@@ -1,14 +1,31 @@
+AccessModifierOffset: -4
+AlignAfterOpenBracket: Align
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: true
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
 BasedOnStyle: LLVM
-IndentWidth: 4
-
-SortIncludes: false
-ColumnLimit: 80
-PointerAlignment: Right
-ReferenceAlignment: Right
-PenaltyReturnTypeOnItsOwnLine: 20
 BinPackArguments: true
 BinPackParameters: true
-
-ReflowComments: Never
-
 BreakBeforeBraces: Allman
+ColumnLimit: 80
+DisableFormat: false
+IndentWidth: 4
+PenaltyReturnTypeOnItsOwnLine: 20
+PointerAlignment: Right
+ReferenceAlignment: Right
+ReflowComments: false
+SortIncludes: false
+SpaceAfterCStyleCast: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCaseColon: false
+SpacesBeforeTrailingComments: 2
+SpacesInCStyleCastParentheses: false
+SpacesInContainerLiterals: false
+SpacesInParentheses: false

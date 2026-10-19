@@ -13,13 +13,11 @@
 LearnOpenGLCamera::Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 // Cursor location initialsed at the center of the screen
 float lastX = 400, lastY = 300;
-bool firstMouse = true;
+bool  firstMouse = true;
 
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
-
-
 
 /**
  * @brief callback functions to resize the window
@@ -74,13 +72,14 @@ void mouse_callback(GLFWwindow *window, double xpos, double ypos)
 {
     if (firstMouse)
     {
-        lastX = xpos;
-        lastY = ypos;
+        lastX      = xpos;
+        lastY      = ypos;
         firstMouse = false;
     }
 
     float xoffset = xpos - lastX;
     float yoffset = lastY - ypos;
+
     lastX = xpos;
     lastY = ypos;
 
@@ -110,7 +109,6 @@ int main()
 
     window =
         glfwCreateWindow(800, 600, "LearnOpengl_FloatingWindow", NULL, NULL);
-
 
     if (!window)
     {
@@ -145,47 +143,47 @@ int main()
     // Copied from learn opengl
 
     float vertices[] = {
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, //
-        0.5f,  -0.5f, -0.5f, 1.0f, 0.0f, //
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, //
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, //  Format
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, //
-        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f, //
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  //
+        0.5f,  -0.5f, -0.5f, 1.0f, 0.0f,  //
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,  //
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,  //  Format
+        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f,  //
+        -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,  //
 
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, //
-        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, //
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, //
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f, //
-        -0.5f, 0.5f,  0.5f,  0.0f, 1.0f, //
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, //
+        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,  //
+        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,  //
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  //
+        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,  //
+        -0.5f, 0.5f,  0.5f,  0.0f, 1.0f,  //
+        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,  //
 
-        -0.5f, 0.5f,  0.5f,  1.0f, 0.0f, //
-        -0.5f, 0.5f,  -0.5f, 1.0f, 1.0f, //
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, //
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, //
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, //
-        -0.5f, 0.5f,  0.5f,  1.0f, 0.0f, //
+        -0.5f, 0.5f,  0.5f,  1.0f, 0.0f,  //
+        -0.5f, 0.5f,  -0.5f, 1.0f, 1.0f,  //
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  //
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  //
+        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,  //
+        -0.5f, 0.5f,  0.5f,  1.0f, 0.0f,  //
 
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, //
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, //
-        0.5f,  -0.5f, -0.5f, 0.0f, 1.0f, //
-        0.5f,  -0.5f, -0.5f, 0.0f, 1.0f, //
-        0.5f,  -0.5f, 0.5f,  0.0f, 0.0f, //
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, //
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,  //
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,  //
+        0.5f,  -0.5f, -0.5f, 0.0f, 1.0f,  //
+        0.5f,  -0.5f, -0.5f, 0.0f, 1.0f,  //
+        0.5f,  -0.5f, 0.5f,  0.0f, 0.0f,  //
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,  //
 
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, //
-        0.5f,  -0.5f, -0.5f, 1.0f, 1.0f, //
-        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, //
-        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f, //
-        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f, //
-        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f, //
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  //
+        0.5f,  -0.5f, -0.5f, 1.0f, 1.0f,  //
+        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,  //
+        0.5f,  -0.5f, 0.5f,  1.0f, 0.0f,  //
+        -0.5f, -0.5f, 0.5f,  0.0f, 0.0f,  //
+        -0.5f, -0.5f, -0.5f, 0.0f, 1.0f,  //
 
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f, //
-        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f, //
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, //
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f, //
-        -0.5f, 0.5f,  0.5f,  0.0f, 0.0f, //
-        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f  //
+        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f,  //
+        0.5f,  0.5f,  -0.5f, 1.0f, 1.0f,  //
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,  //
+        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,  //
+        -0.5f, 0.5f,  0.5f,  0.0f, 0.0f,  //
+        -0.5f, 0.5f,  -0.5f, 0.0f, 1.0f   //
     };
 
     glm::vec3 cubePositions[] = {
@@ -229,7 +227,7 @@ int main()
                     GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
-    int width, height, nrChannels; // Number of colour Channels
+    int            width, height, nrChannels;  // Number of colour Channels
     unsigned char *data = stbi_load("resources/textures/container.jpg", &width,
                                     &height, &nrChannels, 0);
     if (data)
@@ -269,8 +267,7 @@ int main()
 
     // transformation matrix
     glm::mat4 trans = glm::mat4(1.0f);
-    // trans = glm::rotate(trans, glm::radians(90.0f), glm::vec3(0.0, 0.0, 1.0));
-    // trans = glm::scale(trans, glm::vec3(0.5, 0.5, 0.5));
+
     trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 
     // This needs to be before the glUniform for them to work
@@ -280,7 +277,8 @@ int main()
 
     // Coordinate system
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    model =
+        glm::rotate(model, glm::radians(-55.0f), glm::vec3(1.0f, 0.0f, 0.0f));
 
     // Camera logic
     glm::mat4 view;
@@ -293,8 +291,8 @@ int main()
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        deltaTime          = currentFrame - lastFrame;
+        lastFrame          = currentFrame;
 
         processInput(window);
 
@@ -317,7 +315,6 @@ int main()
         projection = glm::perspective(glm::radians(camera.Zoom),
                                       800.0f / 600.0f, 0.1f, 100.0f);
 
-
         int viewLoc = glGetUniformLocation(ourShader.ID, "view");
         glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
 
@@ -327,16 +324,17 @@ int main()
 
         for (unsigned int i = 0; i < 10; i++)
         {
-            model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
+            model       = glm::mat4(1.0f);
+            model       = glm::translate(model, cubePositions[i]);
             float angle = 20.0f * i;
-            if (i % 3 == 0) {
+            if (i % 3 == 0)
+            {
                 angle = glfwGetTime() * 25.0f;
             }
             model = glm::rotate(model, glm::radians(angle),
                                 glm::vec3(1.0f, 0.3f, 0.5f));
-            glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "model"),
-                               1, GL_FALSE, glm::value_ptr(model));
+            glUniformMatrix4fv(glGetUniformLocation(ourShader.ID, "model"), 1,
+                               GL_FALSE, glm::value_ptr(model));
             // render container
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }

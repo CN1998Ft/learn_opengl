@@ -5,7 +5,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-enum Camera_Movement {
+enum Camera_Movement
+{
     FORWARD,
     BACKWARD,
     LEFT,
@@ -13,10 +14,10 @@ enum Camera_Movement {
 };
 
 const float YAW         = -90.0f;
-const float PITCH       =   0.0f;
-const float SPEED       =   2.5f;
-const float SENSITIVITY =   0.1f;
-const float ZOOM        =  45.0f;
+const float PITCH       = 0.0f;
+const float SPEED       = 2.5f;
+const float SENSITIVITY = 0.1f;
+const float ZOOM        = 45.0f;
 
 namespace LearnOpenGLCamera
 {
@@ -40,27 +41,27 @@ public:
     // Class constructor, after : is the member initialisation thing
     // basically it is Front = glm::vec3(0.0f, 0.0f, -1.0f)
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 0.0f),
-            glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
-            float yaw = YAW, float pitch = PITCH) :
-        Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED),
-        MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+           glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f), float yaw = YAW,
+           float pitch = PITCH)
+        : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED),
+          MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
         Position = position;
-        WorldUp = up;
-        Yaw = yaw;
-        Pitch = pitch;
+        WorldUp  = up;
+        Yaw      = yaw;
+        Pitch    = pitch;
         updateCameraVector();
     }
 
-    Camera(float posX, float posY, float posZ, float upX, float upY,
-            float upZ, float yaw, float pitch) :
-        Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED),
-        MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
+    Camera(float posX, float posY, float posZ, float upX, float upY, float upZ,
+           float yaw, float pitch)
+        : Front(glm::vec3(0.0f, 0.0f, -1.0f)), MovementSpeed(SPEED),
+          MouseSensitivity(SENSITIVITY), Zoom(ZOOM)
     {
         Position = glm::vec3(posX, posY, posZ);
-        WorldUp = glm::vec3(upX, upY, upZ);
-        Yaw = yaw;
-        Pitch = pitch;
+        WorldUp  = glm::vec3(upX, upY, upZ);
+        Yaw      = yaw;
+        Pitch    = pitch;
         updateCameraVector();
     }
 
@@ -83,7 +84,7 @@ public:
     }
 
     void ProcessMouseMovement(float xoffset, float yoffset,
-            GLboolean constrainPitch = true)
+                              GLboolean constrainPitch = true)
     {
         xoffset *= MouseSensitivity;
         yoffset *= MouseSensitivity;
@@ -119,11 +120,11 @@ private:
         front.x = cos(glm::radians(Yaw)) * cos(glm::radians(Pitch));
         front.y = sin(glm::radians(Pitch));
         front.z = sin(glm::radians(Yaw)) * cos(glm::radians(Pitch));
-        Front = glm::normalize(front);
-        Right = glm::normalize(glm::cross(Front, WorldUp));
-        Up = glm::normalize(glm::cross(Right, Front));
+        Front   = glm::normalize(front);
+        Right   = glm::normalize(glm::cross(Front, WorldUp));
+        Up      = glm::normalize(glm::cross(Right, Front));
     }
-};// Class Camera
-} // namespace LearnOpenGLCamera
+};  // Class Camera
+}  // namespace LearnOpenGLCamera
 
-#endif // CAMERA_HPP
+#endif  // CAMERA_HPP
