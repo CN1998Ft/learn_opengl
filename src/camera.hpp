@@ -11,6 +11,8 @@ enum Camera_Movement
     BACKWARD,
     LEFT,
     RIGHT,
+    UP,
+    DOWN,
 };
 
 const float YAW         = -90.0f;
@@ -81,6 +83,16 @@ public:
             Position -= Right * velocity;
         if (direction == RIGHT)
             Position += Right * velocity;
+        if (direction == UP)
+            Position += Up * velocity;
+        if (direction == DOWN)
+        {
+            printf("Position y value is %f\n", Position.y);
+            if (Position.y > 0.0f)
+                Position -= Up * velocity;
+            else
+                ;
+        }
     }
 
     void ProcessMouseMovement(float xoffset, float yoffset,
