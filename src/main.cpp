@@ -142,7 +142,9 @@ int main()
     printf("OpenGL %d.%d\n", GLAD_VERSION_MAJOR(version),
            GLAD_VERSION_MINOR(version));
 
-    glViewport(0, 0, 800, 600);
+    int width, height;
+    glfwGetFramebufferSize(window, &width, &height);
+    glViewport(0, 0, width, height);
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
